@@ -74,9 +74,26 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+
+        <!---->
         @if($errors->any())
-            <h4>{{$errors->first()}}</h4>
+        <div class="alert alert-danger alert-dismissible fade show ml-auto" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            <ul id="errors">
+                {{--  die(print_r($errors)) --}}
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
         @endif
+        <!---->
+
+
+
         @include('flash::message')
         <section class="content">
             @yield('content')

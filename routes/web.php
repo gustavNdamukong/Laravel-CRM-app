@@ -18,7 +18,7 @@ Auth::routes(['register' => false]);
 
 Route::resource('home', 'HomeController');
 Route::resource('employees', 'EmployeesController', ['except' => ['show']]);
-Route::resource('companies', 'CompaniesController', ['except' => ['show']]);
+Route::resource('companies', 'CompaniesController');
 
 Route::resource('/', 'HomeController');
 

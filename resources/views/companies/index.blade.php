@@ -23,7 +23,7 @@
                 <th>Email</th>
                 <th>Logo</th>
                 <th>Website</th>
-                <th colspan="2" class="text-center">Actions</th>
+                <th colspan="3" class="text-center">Actions</th>
               </tr>
               </thead>
               <tbody>
@@ -37,8 +37,14 @@
                   <td>
                     <a
                       href="{{ route('companies.edit', $company->id) }}"
-                      class="btn btn-primary"
-                    >Edit</a>
+                      class="btn btn-primary btn-sm"
+                    ><i class="fas fa-pen"></i></a>
+                  </td>
+                  <td>
+                    <a
+                            href="{{ route('companies.show', $company->id) }}"
+                            class="btn btn-primary btn-sm"
+                    ><i class="fas fa-eye"></i></a>
                   </td>
                   <td>
                     <form action="{{ route("companies.destroy", $company->id) }}" method="POST">
@@ -47,8 +53,8 @@
                       <button type="submit"
                               onclick="if (!confirm('Are you sure you want to delete this company?'))
                                                         { return false;}"
-                              class="btn btn-danger">
-                        Delete
+                              class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
                       </button>
                     </form>
                   </td>

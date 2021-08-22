@@ -53075,3 +53075,8 @@ table td {
     word-wrap: break-word;
 }
 
+#errors li {
+    list-style: none;
+    text-align: center;
+}
+

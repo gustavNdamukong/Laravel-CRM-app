@@ -59,3 +59,6 @@ abstract class DuskTestCase extends BaseTestCase
                isset($_ENV['DUSK_HEADLESS_DISABLED']);
     }
 }
+
+
+

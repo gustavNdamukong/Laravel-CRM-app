@@ -49,5 +49,5 @@ return [
     |
     */
 
-    'default' => 'storage/app/public/',
+    'default' => 'storage/',
 ];

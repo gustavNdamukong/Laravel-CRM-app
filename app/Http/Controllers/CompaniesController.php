@@ -21,6 +21,11 @@ class CompaniesController extends Controller
         return view('companies.index', compact('companies'));
     }
 
+    public function show(Companies $company)
+    {
+        return view('companies.details', compact('company'));
+    }
+
     public function create()
     {
         $company = new Companies;
@@ -29,21 +34,24 @@ class CompaniesController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'fileUpload' => 'dimensions:min_width=100, min_height=100',
         ]);
 
-        //validate file size
-        $validator = Validator::make($request->all(), [
-            'file' => 'min:100',
-        ]);
+        if ($validator->fails())
+        {
+            return redirect('companies/create')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $company = new Companies();
         $fileName = NULL;
 
         if ($request->hasFile('fileUpload')) {
             //Specify file upload path
-            $destinationPath = 'storage/app/public/';
+            //$destinationPath = 'storage/app/public/';
 
             $upload = new \DGZ_Uploader\DGZ_Uploader('default');
 
@@ -56,7 +64,7 @@ class CompaniesController extends Controller
             }
             else
             {
-                return redirect('companies');
+                return redirect('companies/create');
             }
 
             if (isset($uploadedFilename))
@@ -84,14 +92,17 @@ class CompaniesController extends Controller
 
     public function update(Request $request, Companies $company)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'fileUpload' => 'dimensions:min_width=100, min_height=100',
         ]);
 
-        //validate file size
-        $validator = Validator::make($request->all(), [
-            'file' => 'min:100',
-        ]);
+        if ($validator->fails())
+        {
+            return redirect('companies/'.$request->company_id.'/edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $company = new Companies();
         $fileName = isset($request->old_logo) ? $request->old_logo : NULL;
@@ -102,7 +113,7 @@ class CompaniesController extends Controller
             if (isset($request->old_logo))
             {
                 //get the file upload path
-                $destinationPath = 'storage/app/public/';
+                $destinationPath = 'storage/';
                 $oldLogo = $request->old_logo;
                 unlink($destinationPath.$oldLogo);
             }
@@ -142,6 +153,16 @@ class CompaniesController extends Controller
 
     public function destroy(Companies $company)
     {
+        if ($company->logo != "")
+        {
+            $imagePath = "storage/".$company->logo;
+            if (file_exists($imagePath))
+            {
+                unlink($imagePath);
+            }
+        }
+
+        //delete company data
         $company->delete();
         flash("Company {$company->name} deleted")->success();
 
